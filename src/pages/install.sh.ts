@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 
 const REPO = 'iamkaf/zuri';
 const DEFAULT_REF = 'main';
+export const prerender = false;
 
 const rawUrlForRef = (ref: string) =>
   `https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(ref)}/install.sh`;
