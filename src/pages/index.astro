@@ -1,17 +1,215 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Zuri | A small task app that lives in your system tray">
+	<main class="container">
+		<!-- Hero Section -->
+		<section class="hero-section">
+			<div class="animate-fade-up">
+				<h1 class="hero-title">
+					<span class="text-accent">Zuri.</span><br />
+					Tasks in your tray.
+				</h1>
+				<p class="hero-subtitle">
+					Not a whole productivity system.<br />
+					Just a markdown file, a tray icon, and a shortcut. Open it, add
+					a task, close it, move on.
+				</p>
+
+				<!-- Install Block & Copy Script -->
+				<div class="install-block animate-fade-up delay-2">
+					<code class="install-code" id="install-cmd"
+						>curl -fsSL https://zuri.kaf.sh/install.sh | bash</code
+					>
+					<button
+						class="copy-btn"
+						id="copy-btn"
+						aria-label="Copy install command">Copy</button
+					>
+				</div>
+
+				<div
+					class="animate-fade-up delay-3"
+					style="margin-top: var(--space-md);"
+				>
+					<p class="mono text-secondary" style="font-size: 0.9rem;">
+						Supports Linux, Windows, & macOS. <br />
+						Requires Node.js 20+.
+					</p>
+				</div>
+			</div>
+
+			<!-- Abstract decor (Brutalist shape) -->
+			<div class="decor-shape animate-fade-up delay-4"></div>
+		</section>
+
+		<!-- Philosophy -->
+		<section class="section reveal" id="philosophy">
+			<h2 style="font-size: clamp(2rem, 4vw, 3rem);">The Core Idea</h2>
+			<div style="max-width: 800px;">
+				<p
+					style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: var(--space-md);"
+				>
+					Most task apps try to be your entire brain. Zuri doesn't.
+					Zuri reads and writes <strong class="text-primary"
+						>one markdown file</strong
+					> that you control. You can edit it in your favorite text editor,
+					and Zuri instantly reloads exactly what you saved.
+				</p>
+
+				<div class="code-example mono">
+					<pre><code># Tasks
+
+## Inbox
+- [ ] Buy groceries
+  - priority: P1
+  - due: 2026-03-01
+- [x] Call mom
+
+## Habits
+- [ ] Take vitamins
+  - recur: daily
+</code></pre>
+				</div>
+			</div>
+		</section>
+
+		<!-- Features -->
+		<section class="section reveal" id="features">
+			<h2>Features</h2>
+			<div class="features-grid">
+				<div class="feature-card">
+					<h3 class="feature-title">Tray Native</h3>
+					<p class="feature-desc">
+						Click the tray icon to open. Click away to hide. It's
+						always there when you need it, invisible when you don't.
+					</p>
+				</div>
+				<div class="feature-card">
+					<h3 class="feature-title">Plain Text Backed</h3>
+					<p class="feature-desc">
+						All tasks are stored in a standard Markdown file. No
+						proprietary databases. Total ownership of your data.
+					</p>
+				</div>
+				<div class="feature-card">
+					<h3 class="feature-title">Global Shortcuts</h3>
+					<p class="feature-desc">
+						Hit your custom hotkey from anywhere in your OS to
+						instantly bring up your task list and add a thought.
+					</p>
+				</div>
+				<div class="feature-card">
+					<h3 class="feature-title">Drag & Drop</h3>
+					<p class="feature-desc">
+						Reorder tasks instantly with native drag and drop. Built
+						with @dnd-kit for a buttery smooth experience.
+					</p>
+				</div>
+				<div class="feature-card">
+					<h3 class="feature-title">Recurring Tasks</h3>
+					<p class="feature-desc">
+						Set tasks to recur daily, weekly, monthly, or on custom
+						intervals directly via markdown tags.
+					</p>
+				</div>
+				<div class="feature-card">
+					<h3 class="feature-title">Open Source</h3>
+					<p class="feature-desc">
+						MIT Licensed. Inspect the code, tweak the UI, or build
+						your own version. Built with React and Desktop web
+						techs.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="footer reveal">
+			<div>&copy; {new Date().getFullYear()} iamkaf</div>
+			<div class="footer-links">
+				<a href="https://github.com/iamkaf/zuri">GitHub Source</a>
+				<a href="https://github.com/iamkaf/zuri/releases">Releases</a>
+			</div>
+		</footer>
+	</main>
+
+	<style>
+		/* Scoped Styles for Index */
+		.decor-shape {
+			position: absolute;
+			right: 5%;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 300px;
+			height: 300px;
+			background: var(--surface-color);
+			border: 1px solid var(--accent-color);
+			z-index: -1;
+			clip-path: polygon(10% 0, 100% 20%, 90% 100%, 0 80%);
+			opacity: 0.1;
+			pointer-events: none;
+		}
+
+		@media (max-width: 768px) {
+			.decor-shape {
+				display: none;
+			}
+			.install-block {
+				flex-direction: column;
+				align-items: stretch;
+			}
+			.hero-section {
+				padding-top: var(--space-lg);
+			}
+		}
+
+		.code-example {
+			background: #000;
+			border: 1px solid var(--border-color);
+			border-radius: var(--radius-md);
+			padding: var(--space-sm) var(--space-md);
+			overflow-x: auto;
+			color: #a9b7c6;
+		}
+
+		.text-primary {
+			color: var(--text-primary);
+		}
+	</style>
+
+	<script>
+		// Copy to clipboard logic
+		document.addEventListener("DOMContentLoaded", () => {
+			const copyBtn = document.getElementById("copy-btn");
+			const installCmd = document.getElementById("install-cmd");
+
+			if (copyBtn && installCmd) {
+				copyBtn.addEventListener("click", async () => {
+					try {
+						await navigator.clipboard.writeText(
+							installCmd.innerText
+						);
+
+						// Visual feedback
+						const originalText = copyBtn.innerText;
+						copyBtn.innerText = "Copied!";
+						copyBtn.classList.add("copied");
+
+						setTimeout(() => {
+							copyBtn.innerText = originalText;
+							copyBtn.classList.remove("copied");
+						}, 2000);
+					} catch (err) {
+						console.error("Failed to copy text: ", err);
+						copyBtn.innerText = "Error";
+						setTimeout(() => {
+							copyBtn.innerText = "Copy";
+						}, 2000);
+					}
+				});
+			}
+		});
+	</script>
+</BaseLayout>
