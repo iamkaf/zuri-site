@@ -9,13 +9,18 @@
 /* --- CSS Variables --- */
 :root {
   /* Colors */
-  --bg-color: #050505; /* Deep black/gray */
-  --text-primary: #f0f0f0; /* Off-white */
-  --text-secondary: #888888; /* Dimmed text */
-  --accent-color: #ff4400; /* Brutal pure orange */
+  --bg-color: #050505;
+  /* Deep black/gray */
+  --text-primary: #f0f0f0;
+  /* Off-white */
+  --text-secondary: #888888;
+  /* Dimmed text */
+  --accent-color: #ff4400;
+  /* Brutal pure orange */
   --border-color: #333333;
-  --surface-color: #111111; /* Slightly lighter than bg */
-  
+  --surface-color: #111111;
+  /* Slightly lighter than bg */
+
   /* Typography */
   --font-display: 'Bricolage Grotesque', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -35,11 +40,22 @@
 }
 
 /* --- Reset & Base --- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
   margin: 0;
 }
 
@@ -69,7 +85,12 @@ body::before {
 }
 
 /* --- Typography --- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.1;
@@ -77,9 +98,17 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-sm);
 }
 
-h1 { font-size: clamp(3rem, 8vw, 6rem); }
-h2 { font-size: clamp(2rem, 5vw, 4rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
 
 a {
   color: var(--text-primary);
@@ -132,24 +161,6 @@ a:hover {
   margin-bottom: var(--space-lg);
 }
 
-.install-block {
-  background: var(--surface-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-sm) var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-md);
-  font-family: var(--font-mono);
-  position: relative;
-  overflow: hidden;
-}
-
-.install-block::before {
-  content: "$";
-  color: var(--text-secondary);
-  user-select: none;
-}
 
 .install-code {
   color: var(--text-primary);
@@ -160,6 +171,7 @@ a:hover {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .install-code::-webkit-scrollbar {
   display: none;
 }
@@ -250,6 +262,7 @@ a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -257,14 +270,26 @@ a:hover {
 }
 
 .animate-fade-up {
-  opacity: 0; /* JS or keyframe will reveal */
+  opacity: 0;
+  /* JS or keyframe will reveal */
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
+.delay-1 {
+  animation-delay: 0.1s;
+}
+
+.delay-2 {
+  animation-delay: 0.2s;
+}
+
+.delay-3 {
+  animation-delay: 0.3s;
+}
+
+.delay-4 {
+  animation-delay: 0.4s;
+}
 
 /* Scroll reveal class (toggled by Vanilla JS) */
 .reveal {

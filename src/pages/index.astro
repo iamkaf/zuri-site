@@ -17,16 +17,96 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 					a task, close it, move on.
 				</p>
 
-				<!-- Install Block & Copy Script -->
-				<div class="install-block animate-fade-up delay-2">
-					<code class="install-code" id="install-cmd"
-						>curl -fsSL https://zuri.kaf.sh/install.sh | bash</code
+				<!-- OS Tabs -->
+				<div
+					class="os-tabs animate-fade-up delay-2"
+					id="os-tabs"
+					role="tablist"
+				>
+					<button
+						class="os-tab active"
+						role="tab"
+						aria-selected="true"
+						aria-controls="panel-linux"
+						id="tab-linux"
+						data-os="linux">Linux</button
 					>
 					<button
-						class="copy-btn"
-						id="copy-btn"
-						aria-label="Copy install command">Copy</button
+						class="os-tab"
+						role="tab"
+						aria-selected="false"
+						aria-controls="panel-windows"
+						id="tab-windows"
+						data-os="windows">Windows</button
 					>
+					<button
+						class="os-tab"
+						role="tab"
+						aria-selected="false"
+						aria-controls="panel-macos"
+						id="tab-macos"
+						data-os="macos">macOS</button
+					>
+				</div>
+
+				<!-- Install Blocks -->
+				<div class="install-block-container animate-fade-up delay-2">
+					<!-- Linux Panel -->
+					<div
+						class="install-block active"
+						id="panel-linux"
+						role="tabpanel"
+						aria-labelledby="tab-linux"
+					>
+						<span class="prompt">$</span>
+						<code class="install-code" id="install-cmd-linux"
+							>curl -fsSL https://zuri.kaf.sh/install.sh | bash</code
+						>
+						<button
+							class="copy-btn copy-action"
+							aria-label="Copy install command"
+							data-target="install-cmd-linux">Copy</button
+						>
+					</div>
+
+					<!-- Windows Panel -->
+					<div
+						class="install-block"
+						id="panel-windows"
+						role="tabpanel"
+						aria-labelledby="tab-windows"
+						hidden
+					>
+						<span class="prompt">&gt;</span>
+						<code class="install-code" id="install-cmd-windows"
+							>irm https://zuri.kaf.sh/install.ps1 | iex</code
+						>
+						<button
+							class="copy-btn copy-action"
+							aria-label="Copy install command"
+							data-target="install-cmd-windows">Copy</button
+						>
+					</div>
+
+					<!-- macOS Panel -->
+					<div
+						class="install-block"
+						id="panel-macos"
+						role="tabpanel"
+						aria-labelledby="tab-macos"
+						hidden
+					>
+						<span class="prompt" style="color: var(--accent-color);"
+							>ⓘ</span
+						>
+						<span class="install-code"
+							>Requires building from source on macOS</span
+						>
+						<a
+							href="https://github.com/iamkaf/zuri/blob/main/docs/BUILDING_FROM_SOURCE.md"
+							class="copy-btn cta-btn">Docs</a
+						>
+					</div>
 				</div>
 
 				<div
@@ -152,9 +232,87 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			pointer-events: none;
 		}
 
+		/* OS Tabs */
+		.os-tabs {
+			display: flex;
+			gap: 0;
+			margin-bottom: -1px; /* Overlap border */
+			z-index: 2;
+			position: relative;
+		}
+
+		.os-tab {
+			background: var(--bg-color);
+			border: 1px solid var(--border-color);
+			color: var(--text-secondary);
+			padding: 0.5rem 1.5rem;
+			font-family: var(--font-mono);
+			font-size: 0.85rem;
+			text-transform: uppercase;
+			cursor: pointer;
+			border-bottom-color: var(--border-color);
+			transition: all 0.2s ease;
+			border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+		}
+
+		.os-tab:hover {
+			color: var(--text-primary);
+			background: var(--surface-color);
+		}
+
+		.os-tab.active {
+			color: var(--accent-color);
+			background: var(--surface-color);
+			border-bottom-color: var(
+				--surface-color
+			); /* Merge visually with box below */
+			font-weight: 700;
+		}
+
+		.install-block-container {
+			position: relative;
+		}
+
+		/* Override global install-block for tabs */
+		.install-block {
+			display: none;
+			align-items: center;
+			gap: var(--space-md);
+			background: var(--surface-color);
+			border: 1px solid var(--border-color);
+			border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+			padding: var(--space-sm) var(--space-md);
+			font-family: var(--font-mono);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.install-block.active {
+			display: inline-flex;
+		}
+
+		.prompt {
+			color: var(--text-secondary);
+			user-select: none;
+		}
+
+		.cta-btn {
+			text-decoration: none;
+		}
+		.cta-btn:hover {
+			text-decoration: none;
+			background: var(--accent-color);
+			border-color: var(--accent-color);
+			color: var(--bg-color);
+		}
+
 		@media (max-width: 768px) {
 			.decor-shape {
 				display: none;
+			}
+			.install-block-container {
+				display: flex;
+				flex-direction: column;
 			}
 			.install-block {
 				flex-direction: column;
@@ -162,6 +320,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			}
 			.hero-section {
 				padding-top: var(--space-lg);
+			}
+			.os-tab {
+				padding: 0.5rem 1rem;
+				flex: 1;
+				text-align: center;
+			}
+			.install-block {
+				border-radius: 0 0 var(--radius-md) var(--radius-md);
 			}
 		}
 
@@ -180,36 +346,86 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	</style>
 
 	<script>
-		// Copy to clipboard logic
+		// Tab switching and auto-detect logic
 		document.addEventListener("DOMContentLoaded", () => {
-			const copyBtn = document.getElementById("copy-btn");
-			const installCmd = document.getElementById("install-cmd");
+			const setOS = (os: string) => {
+				// Deactivate all
+				document.querySelectorAll(".os-tab").forEach((t) => {
+					t.classList.remove("active");
+					t.setAttribute("aria-selected", "false");
+				});
+				document.querySelectorAll(".install-block").forEach((p) => {
+					p.classList.remove("active");
+					(p as HTMLElement).hidden = true;
+				});
 
-			if (copyBtn && installCmd) {
-				copyBtn.addEventListener("click", async () => {
+				// Activate target
+				const tab = document.querySelector(`.os-tab[data-os="${os}"]`);
+				const panel = document.getElementById(`panel-${os}`);
+
+				if (tab && panel) {
+					tab.classList.add("active");
+					tab.setAttribute("aria-selected", "true");
+					panel.classList.add("active");
+					panel.hidden = false;
+				}
+			};
+
+			// Auto-detect OS
+			const ua = navigator.userAgent.toLowerCase();
+			let detectedOS = "linux";
+
+			if (ua.indexOf("win") !== -1) {
+				detectedOS = "windows";
+			} else if (ua.indexOf("mac") !== -1) {
+				detectedOS = "macos";
+			}
+
+			setOS(detectedOS);
+
+			// Event listeners for tabs
+			document.querySelectorAll(".os-tab").forEach((tab) => {
+				tab.addEventListener("click", (e) => {
+					const targetOS = (e.target as HTMLElement).getAttribute(
+						"data-os"
+					);
+					if (targetOS) setOS(targetOS);
+				});
+			});
+
+			// Copy to clipboard logic
+			document.querySelectorAll(".copy-action").forEach((btn) => {
+				btn.addEventListener("click", async (e) => {
+					const btnEl = e.currentTarget as HTMLElement;
+					const targetId = btnEl.getAttribute("data-target");
+					if (!targetId) return;
+
+					const installCmd = document.getElementById(targetId);
+					if (!installCmd) return;
+
 					try {
 						await navigator.clipboard.writeText(
 							installCmd.innerText
 						);
 
 						// Visual feedback
-						const originalText = copyBtn.innerText;
-						copyBtn.innerText = "Copied!";
-						copyBtn.classList.add("copied");
+						const originalText = btnEl.innerText;
+						btnEl.innerText = "Copied!";
+						btnEl.classList.add("copied");
 
 						setTimeout(() => {
-							copyBtn.innerText = originalText;
-							copyBtn.classList.remove("copied");
+							btnEl.innerText = originalText;
+							btnEl.classList.remove("copied");
 						}, 2000);
 					} catch (err) {
 						console.error("Failed to copy text: ", err);
-						copyBtn.innerText = "Error";
+						btnEl.innerText = "Error";
 						setTimeout(() => {
-							copyBtn.innerText = "Copy";
+							btnEl.innerText = "Copy";
 						}, 2000);
 					}
 				});
-			}
+			});
 		});
 	</script>
 </BaseLayout>
